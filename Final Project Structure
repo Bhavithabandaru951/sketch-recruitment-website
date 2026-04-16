@@ -1,0 +1,15 @@
+premium-recruitment-website/
+│
+├── frontend/
+│   ├── index.html
+│   ├── login.html
+│   ├── dashboard.html
+│   ├── styles.css
+│   ├── script.js
+│
+├── backend/
+│   ├── server.js
+│   ├── package.json
+│
+├── .gitignore
+├── README.md
