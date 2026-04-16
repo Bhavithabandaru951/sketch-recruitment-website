@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Recruitments Open</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<h1>🚀 Recruitments Are Now Open</h1>
+
+<div class="domains">
+  <div>💵 Sponsorship & Finance</div>
+  <div>🤝 O&PR</div>
+  <div>👩‍💻 R&D</div>
+  <div>📸 Media & Marketing</div>
+  <div>🎨 Design</div>
+  <div>✍️ Content</div>
+</div>
+
+<a href="login.html">
+  <button>Apply Now</button>
+</a>
+
+</body>
+</html>
