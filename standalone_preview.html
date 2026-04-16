@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sketch Recruitment - Premium Setup</title>
+    
+    <!-- React & ReactDOM -->
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+    
+    <!-- Babel for JSX -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-primary: #05050a;
+            --bg-gradient: radial-gradient(circle at top, #1a1a2e 0%, #05050a 100%);
+            --accent-primary: #7c3aed;
+            --accent-secondary: #ec4899;
+            --text-primary: #ffffff;
+            --text-secondary: #9ca3af;
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.08);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background-color: var(--bg-primary); background-image: var(--bg-gradient); color: var(--text-primary); min-height: 100vh; overflow-x: hidden; }
+        
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
+        
+        .glass-panel {
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            border-radius: 16px;
+        }
+
+        .text-gradient {
+            background: linear-gradient(135deg, var(--text-primary) 0%, var(--text-secondary) 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+
+        .text-gradient-accent {
+            background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+
+        .btn {
+            display: inline-flex; align-items: center; justify-content: center;
+            padding: 0.75rem 1.5rem; border-radius: 9999px; font-weight: 500;
+            transition: all 0.3s ease; cursor: pointer; border: none; text-decoration: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            color: white; box-shadow: 0 4px 15px rgba(124, 58, 237, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px); box-shadow: 0 6px 20px rgba(124, 58, 237, 0.5);
+        }
+
+        .btn-ghost { background: transparent; color: white; border: 1px solid var(--glass-border); }
+        .btn-ghost:hover { background: var(--glass-bg); }
+
+        nav { position: fixed; top: 0; width: 100%; z-index: 50; padding: 1.5rem 0; background: rgba(5,5,10,0.8); backdrop-filter: blur(10px); border-bottom: 1px solid var(--glass-border); }
+        
+        .hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; position: relative; }
+        .hero h1 { font-size: clamp(3rem, 6vw, 5rem); margin-bottom: 1rem; line-height: 1.1; }
+        .hero p { font-size: 1.25rem; color: var(--text-secondary); max-width: 600px; margin-bottom: 2rem; line-height: 1.6; }
+        
+        .glow { position: absolute; background: var(--accent-primary); filter: blur(150px); opacity: 0.2; border-radius: 50%; z-index: -1; }
+        .glow-1 { top: 20%; left: 50%; transform: translateX(-50%); width: 500px; height: 300px; }
+        
+        .domains-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; padding: 4rem 0; }
+        .domain-card { padding: 2rem; transition: transform 0.3s; position: relative; overflow: hidden; }
+        .domain-card:hover { transform: translateY(-10px); }
+        .domain-icon { background: rgba(255,255,255,0.05); padding: 1rem; border-radius: 12px; display: inline-block; margin-bottom: 1rem; color: var(--accent-secondary); }
+        .domain-card h3 { font-size: 1.5rem; margin-bottom: 1rem; }
+        .domain-card p { color: var(--text-secondary); line-height: 1.6; margin-bottom: 1.5rem; }
+
+        .auth-container { min-height: 100vh; display: flex; align-items: center; justify-content: center; }
+        .auth-card { width: 100%; max-width: 400px; padding: 3rem; text-align: center; }
+        .input-field { width: 100%; padding: 0.8rem 1rem; background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); border-radius: 8px; color: white; margin-bottom: 1rem; font-size: 1rem; }
+        .input-field:focus { outline: none; border-color: var(--accent-primary); }
+
+        .fade-in { animation: fadeIn 0.8s ease-out forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        const domains = [
+            { icon: 'briefcase', title: "Sponsorship & Finance", desc: "Drive the monetary fuel of our club." },
+            { icon: 'users', title: "O&PR", desc: "Outreach & Public Relations. Be the face of our organization." },
+            { icon: 'code', title: "R&D", desc: "Research & Development. Build cutting-edge tech." },
+            { icon: 'camera', title: "Media & Marketing", desc: "Capture the moment and market our vision." },
+            { icon: 'pen-tool', title: "Design", desc: "Create stunning visuals and UI/UX." },
+            { icon: 'file-text', title: "Content", desc: "Draft compelling narratives and blogs." }
+        ];
+
+        const App = () => {
+            const [view, setView] = useState('home');
+            const [user, setUser] = useState(null);
+
+            useEffect(() => {
+                lucide.createIcons();
+            }, [view]);
+
+            const login = (e) => {
+                e.preventDefault();
+                setUser({ name: 'Alexander', status: 'Pending', domain: 'R&D' });
+                setView('dashboard');
+            };
+
+            return (
+                <div>
+                    <nav>
+                        <div className="container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                            <div style={{ fontSize: '1.5rem', fontWeight: 'bold', cursor: 'pointer' }} onClick={() => setView('home')}>
+                                Nexus<span className="text-gradient-accent">.</span>
+                            </div>
+                            <div style={{ display: 'flex', gap: '1rem' }}>
+                                {user ? (
+                                    <>
+                                        <button className="btn btn-ghost" onClick={() => setView('dashboard')}>Dashboard</button>
+                                        <button className="btn btn-ghost" onClick={() => { setUser(null); setView('home'); }}>Logout</button>
+                                    </>
+                                ) : (
+                                    <button className="btn btn-primary" onClick={() => setView('auth')}>Apply Now</button>
+                                )}
+                            </div>
+                        </div>
+                    </nav>
+
+                    {view === 'home' && (
+                        <div className="fade-in">
+                            <section className="hero container">
+                                <div className="glow glow-1"></div>
+                                <div style={{ border: '1px solid var(--glass-border)', padding: '0.5rem 1rem', borderRadius: '20px', marginBottom: '2rem', background: 'var(--glass-bg)' }}>
+                                    ✨ Recruitment 2026 is LIVE
+                                </div>
+                                <h1>Are you ready to <span className="text-gradient">build</span> something <span className="text-gradient-accent">impactful?</span></h1>
+                                <p>Join our elite team across 6 distinct domains. We're looking for passionate individuals who want to learn, grow, and lead.</p>
+                                <button className="btn btn-primary" onClick={() => {
+                                    document.getElementById('domains').scrollIntoView({ behavior: 'smooth' });
+                                }} style={{ padding: '1rem 2rem', fontSize: '1.1rem' }}>Explore Domains</button>
+                            </section>
+
+                            <section id="domains" className="container text-center">
+                                <h2 style={{ fontSize: '3rem', textAlign: 'center' }}>Our Domains</h2>
+                                <div className="domains-grid">
+                                    {domains.map((d, i) => (
+                                        <div key={i} className="domain-card glass-panel fade-in" style={{ animationDelay: `${i * 0.1}s` }}>
+                                            <i data-lucide={d.icon} className="domain-icon"></i>
+                                            <h3>{d.title}</h3>
+                                            <p>{d.desc}</p>
+                                            <div style={{ color: 'white', fontWeight: 500, display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer' }} onClick={() => setView('auth')}>
+                                                Apply <i data-lucide="arrow-right" style={{ width: '16px' }}></i>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </section>
+                        </div>
+                    )}
+
+                    {view === 'auth' && (
+                        <div className="auth-container fade-in">
+                            <div className="glow glow-1"></div>
+                            <div className="glass-panel auth-card">
+                                <h2 style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>Join Nexus</h2>
+                                <p style={{ color: 'var(--text-secondary)', marginBottom: '2rem' }}>Sign in to continue</p>
+                                <form onSubmit={login}>
+                                    <input type="email" placeholder="Email Address" required defaultValue="alex@example.com" className="input-field" />
+                                    <input type="password" placeholder="Password" required defaultValue="password" className="input-field" />
+                                    <button type="submit" className="btn btn-primary" style={{ width: '100%' }}>Sign In</button>
+                                </form>
+                            </div>
+                        </div>
+                    )}
+
+                    {view === 'dashboard' && user && (
+                        <div className="container fade-in" style={{ paddingTop: '120px', minHeight: '100vh' }}>
+                            <h1 style={{ fontSize: '2.5rem', marginBottom: '3rem' }}>Welcome back, <span className="text-gradient-accent">{user.name}</span></h1>
+                            
+                            <div style={{ display: 'grid', gridTemplateColumns: 'minmax(300px, 1fr) minmax(300px, 1fr)', gap: '2rem' }}>
+                                <div className="glass-panel" style={{ padding: '2rem' }}>
+                                    <h3 style={{ borderBottom: '1px solid var(--glass-border)', paddingBottom: '1rem', marginBottom: '1rem' }}>Profile</h3>
+                                    <p style={{ color: 'var(--text-secondary)' }}>Status</p>
+                                    <p style={{ color: '#10b981', fontWeight: 'bold' }}>Active Member</p>
+                                </div>
+                                <div className="glass-panel" style={{ padding: '2rem', position: 'relative', overflow: 'hidden' }}>
+                                    <div style={{ position: 'absolute', top: 0, right: 0, width: '150px', height: '150px', background: '#f59e0b', filter: 'blur(80px)', opacity: 0.15, borderRadius: '50%' }}></div>
+                                    <h3 style={{ borderBottom: '1px solid var(--glass-border)', paddingBottom: '1rem', marginBottom: '1rem' }}>Application Status</h3>
+                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                        <div>
+                                            <p style={{ color: 'var(--text-secondary)' }}>Domain Applied</p>
+                                            <p style={{ fontSize: '1.2rem', fontWeight: 'bold' }}>{user.domain}</p>
+                                        </div>
+                                        <div style={{ padding: '0.5rem 1rem', background: 'rgba(245, 158, 11, 0.2)', color: '#f59e0b', borderRadius: '8px', fontWeight: 'bold' }}>
+                                            {user.status}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
